@@ -62,12 +62,13 @@
         />
 
     <Button
-        android:id="@+id/setReminderBtn"
+        android:id="@+id/addItemBtnToDb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="#00502A2A"
         android:backgroundTint="#000000"
 
+        android:text="AddIItem"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -79,8 +80,11 @@
         android:id="@+id/imageButton2"
         android:layout_width="190dp"
         android:layout_height="64dp"
+        android:layout_marginTop="88dp"
+        android:background="@color/Secondary_dark"
         android:text="Set Reminder"
         android:textAllCaps="false"
-        tools:layout_editor_absoluteX="121dp"
-        tools:layout_editor_absoluteY="393dp" />
+        app:layout_constraintEnd_toEndOf="@+id/addItemBtnToDb"
+        app:layout_constraintStart_toStartOf="@+id/addItemBtnToDb"
+        app:layout_constraintTop_toBottomOf="@+id/addItemBtnToDb" />
 </androidx.constraintlayout.widget.ConstraintLayout>

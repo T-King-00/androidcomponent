@@ -2,7 +2,6 @@ package com.example.project;
 
 import static android.content.ContentValues.TAG;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,13 +12,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.bson.Document;
+
+import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+
+import io.realm.mongodb.User;
+import io.realm.mongodb.mongo.MongoClient;
+import io.realm.mongodb.mongo.MongoCollection;
+import io.realm.mongodb.mongo.MongoDatabase;
+
 
 public class AddNewTaskActivity extends AppCompatActivity {
 
@@ -28,11 +35,12 @@ public class AddNewTaskActivity extends AppCompatActivity {
     EditText TaskTitleTxt;
     EditText NoteTxt;
 //firebase stuff
-    FirebaseDatabase mFirebaseDb;
-    FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListener;
-    DatabaseReference myRef;
+  //  FirebaseDatabase mFirebaseDb;
+  //  FirebaseAuth mAuth;
+  //  FirebaseAuth.AuthStateListener mAuthListener;
+  //  DatabaseReference myRef;
 
+    static User mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +49,12 @@ public class AddNewTaskActivity extends AppCompatActivity {
         TaskTitleTxt=(EditText)findViewById(R.id.TaskNameTxt);
         NoteTxt=(EditText)findViewById(R.id.NoteTxt);
 
-        mAuth=FirebaseAuth.getInstance();
+       /* mAuth=FirebaseAuth.getInstance();
         mFirebaseDb=FirebaseDatabase.getInstance();
-        myRef=mFirebaseDb.getReference("note");
+        myRef=mFirebaseDb.getReference("note");*/
 
 
-        mAuthListener=new FirebaseAuth.AuthStateListener() {
+     /*   mAuthListener=new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user= firebaseAuth.getCurrentUser();
@@ -80,7 +88,7 @@ public class AddNewTaskActivity extends AppCompatActivity {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
-        });
+        });*/
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,16 +98,24 @@ public class AddNewTaskActivity extends AppCompatActivity {
                 String note=NoteTxt.getText().toString();
                 if (!note.equals(""))
                 {
-                    FirebaseUser user=mAuth.getCurrentUser();
-                    user.getUid();
-                    myRef.child(user.getUid()).push().setValue(note);
-                    Toast.makeText(AddNewTaskActivity.this, "add new item db", Toast.LENGTH_SHORT).show();
+
+                    MongoClient monClient= mUser.getMongoClient("mongodb-atlas");
+                    MongoDatabase monDb= monClient.getDatabase("ToDoListApp");
+                    MongoCollection<Document> mongoCollection=monDb.getCollection("data");
+
+                    LocalDate f= LocalDate.now();
+                    mongoCollection.insertOne(new Document("userID",mUser.getId()).append("note",title).append("date created",f.toString())).getAsync(result -> {
+                          if (result.isSuccess())
+                         {
+                             Log.d(TAG, "onClick: data inserted successfully");
+                             Toast.makeText(AddNewTaskActivity.this, "add new item db", Toast.LENGTH_LONG).show();
+                         }else
+                             Log.d(TAG, "onClick: data  "+result.getError().toString());
+                         });
                 }
-
-
-
-
             }
         });
     }
+
+
 }

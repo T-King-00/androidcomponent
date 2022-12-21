@@ -17,7 +17,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
-android:src="@mipmap/logo"
+
 
      />
 
@@ -25,28 +25,27 @@ android:src="@mipmap/logo"
         android:id="@+id/EmailAddressTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+
+        android:layout_marginBottom="10dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:text="Email Address"
-
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
-        />
+        android:text="tony_shereen@outlook.com" />
 
     <EditText
         android:id="@+id/passwordTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="Password"
-        android:inputType="textPassword"
-
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"/>
+
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:text="123456" />
 
     <Button
         android:id="@+id/btnForgetPass"
